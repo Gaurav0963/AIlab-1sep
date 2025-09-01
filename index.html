@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI & Game Programming Questions</title>
+    <title>AI (Blind Search) & Game Programming Questions</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -19,6 +19,12 @@
             -webkit-user-select: text; /* Safari */
             -ms-user-select: text; /* IE 10+ and Edge */
             user-select: text; /* Standard syntax */
+        }
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
         }
     </style>
 </head>
@@ -55,6 +61,35 @@ start_node = 'A'</code></pre>
                     <p class="text-sm mb-3">A list or a string showing the sequence of visited nodes.</p>
                      <pre class="bg-gray-200 text-gray-700 p-3 rounded-md text-sm"><code>['A', 'B', 'C', 'D', 'E', 'F']</code></pre>
                 </div>
+                <details class="mt-4 group">
+                    <summary class="font-semibold text-indigo-600 cursor-pointer hover:text-indigo-800 flex items-center">
+                        <span class="group-open:rotate-90 transition-transform duration-200">&#9654;</span>
+                        <span class="ml-2">View Approach & Pseudocode</span>
+                    </summary>
+                    <div class="mt-2 pt-3 border-t">
+                        <h4 class="font-semibold mb-2">Approach:</h4>
+                        <p class="text-sm mb-3">Use a queue to store nodes to visit and a set to track visited nodes. Start with the root, add it to the queue and visited set. While the queue isn't empty, dequeue a node, process it, and add its unvisited neighbors to both the queue and the visited set.</p>
+                        <h4 class="font-semibold mb-2">Pseudocode:</h4>
+                        <pre class="bg-gray-200 text-gray-700 p-3 rounded-md text-sm"><code>function BFS(graph, startNode):
+  queue = new Queue()
+  visited = new Set()
+  result = []
+
+  queue.enqueue(startNode)
+  visited.add(startNode)
+
+  while queue is not empty:
+    currentNode = queue.dequeue()
+    result.add(currentNode)
+
+    for each neighbor in graph[currentNode]:
+      if neighbor is not in visited:
+        visited.add(neighbor)
+        queue.enqueue(neighbor)
+  
+  return result</code></pre>
+                    </div>
+                </details>
             </div>
 
             <!-- Question 2: DFS -->
@@ -78,6 +113,33 @@ start_node = 'A'</code></pre>
                     <p class="text-sm mb-3">A boolean value: `True` if a path is found, otherwise `False`.</p>
                      <pre class="bg-gray-200 text-gray-700 p-3 rounded-md text-sm"><code>True</code></pre>
                 </div>
+                <details class="mt-4 group">
+                    <summary class="font-semibold text-indigo-600 cursor-pointer hover:text-indigo-800 flex items-center">
+                        <span class="group-open:rotate-90 transition-transform duration-200">&#9654;</span>
+                        <span class="ml-2">View Approach & Pseudocode</span>
+                    </summary>
+                    <div class="mt-2 pt-3 border-t">
+                        <h4 class="font-semibold mb-2">Approach:</h4>
+                        <p class="text-sm mb-3">Use recursion or a stack. From the starting point 'S', explore one neighbor as far as possible. If you hit a dead end (a wall or visited cell), backtrack and try another path. The base cases for the recursion are: finding 'E' (success), or going out of bounds/hitting a wall (failure). Mark visited cells to avoid loops.</p>
+                        <h4 class="font-semibold mb-2">Pseudocode:</h4>
+                        <pre class="bg-gray-200 text-gray-700 p-3 rounded-md text-sm"><code>function solveMaze(maze, row, col):
+  if out_of_bounds(row, col) or maze[row][col] is '#':
+    return false
+  if maze[row][col] is 'E':
+    return true
+  if maze[row][col] is 'visited':
+    return false
+  
+  mark maze[row][col] as 'visited'
+
+  path_found = solveMaze(maze, row+1, col) OR
+               solveMaze(maze, row-1, col) OR
+               solveMaze(maze, row, col+1) OR
+               solveMaze(maze, row, col-1)
+
+  return path_found</code></pre>
+                    </div>
+                </details>
             </div>
 
             <!-- Question 3: Tic-Tac-Toe -->
@@ -104,6 +166,36 @@ Player O, enter your move (1-9): 1
 ...
 Player X wins!</code></pre>
                 </div>
+                <details class="mt-4 group">
+                    <summary class="font-semibold text-indigo-600 cursor-pointer hover:text-indigo-800 flex items-center">
+                        <span class="group-open:rotate-90 transition-transform duration-200">&#9654;</span>
+                        <span class="ml-2">View Approach & Pseudocode</span>
+                    </summary>
+                    <div class="mt-2 pt-3 border-t">
+                        <h4 class="font-semibold mb-2">Approach:</h4>
+                        <p class="text-sm mb-3">Use a 1D or 2D array to represent the board. Create a game loop that continues until a win or draw. Inside the loop: display the board, get the current player's input, validate it, update the board state, check for a win/draw, and then switch players.</p>
+                        <h4 class="font-semibold mb-2">Pseudocode:</h4>
+                        <pre class="bg-gray-200 text-gray-700 p-3 rounded-md text-sm"><code>function main():
+  board = create_empty_board()
+  currentPlayer = 'X'
+
+  while game_is_not_over:
+    printBoard(board)
+    move = getPlayerInput(currentPlayer)
+    
+    if isValidMove(board, move):
+      updateBoard(board, move, currentPlayer)
+      if checkWinner(board, currentPlayer):
+        print(currentPlayer + " wins!")
+        break
+      if isBoardFull(board):
+        print("It's a draw!")
+        break
+      currentPlayer = switchPlayer(currentPlayer)
+    else:
+      print("Invalid move.")</code></pre>
+                    </div>
+                </details>
             </div>
 
             <!-- Question 4: Card Shuffle -->
@@ -121,6 +213,35 @@ Player X wins!</code></pre>
                     <p class="text-sm mb-3">A list of 52 strings, where each string represents a card. The order of the cards in the list should be random.</p>
                      <pre class="bg-gray-200 text-gray-700 p-3 rounded-md text-sm"><code>['7 of Diamonds', 'King of Spades', '2 of Clubs', ... (and 49 other random cards)]</code></pre>
                 </div>
+                <details class="mt-4 group">
+                    <summary class="font-semibold text-indigo-600 cursor-pointer hover:text-indigo-800 flex items-center">
+                        <span class="group-open:rotate-90 transition-transform duration-200">&#9654;</span>
+                        <span class="ml-2">View Approach & Pseudocode</span>
+                    </summary>
+                    <div class="mt-2 pt-3 border-t">
+                        <h4 class="font-semibold mb-2">Approach:</h4>
+                        <p class="text-sm mb-3">First, generate a list of all 52 cards. You can do this with nested loops: one for suits and one for ranks. Once you have the ordered list, use a shuffling algorithm like Fisher-Yates or a built-in library function (e.g., Python's `random.shuffle`) to randomize the list in-place.</p>
+                        <h4 class="font-semibold mb-2">Pseudocode:</h4>
+                        <pre class="bg-gray-200 text-gray-700 p-3 rounded-md text-sm"><code>function createDeck():
+  suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
+  ranks = ["2", "3", "4", ..., "King", "Ace"]
+  deck = new List()
+  
+  for each suit in suits:
+    for each rank in ranks:
+      deck.add(rank + " of " + suit)
+  return deck
+
+function shuffle(deck):
+  // Use built-in random shuffle function
+  random.shuffle(deck)
+
+// Main execution
+deck = createDeck()
+shuffle(deck)
+print(deck)</code></pre>
+                    </div>
+                </details>
             </div>
         </div>
     </div>
